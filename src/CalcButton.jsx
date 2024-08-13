@@ -23,10 +23,12 @@ const CalcButton = (props)=> {
                     currentExpression = '0';
                 }
                 setExpression(currentExpression);
-                
                 break;
             case '=':
-                setExpression(evaluate());
+                setExpression(evaluate(currentExpression));
+                break;
+            case 'x²':
+                setExpression(Math.pow(+evaluate(currentExpression), 2));
                 break;
             default:
                 setExpression(currentExpression + value);
@@ -40,8 +42,13 @@ const CalcButton = (props)=> {
     
 }
 
-function evaluate(){
-    console.log('cats')
+/**
+ * 
+ * @param {string} expression 
+ * @returns 
+ */
+function evaluate(expression){
+    return eval(expression.replace('⨯', '*').replace('−', '-').replace('÷', '/'));
 }
 
 export default CalcButton
