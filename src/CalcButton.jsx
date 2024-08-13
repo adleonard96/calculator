@@ -48,6 +48,9 @@ const CalcButton = (props)=> {
                     setExpression(1 / currentExpression)
                 }
                 break;
+            case '√x':
+                isDecimal = false;
+                setExpression(Math.sqrt(+evaluate(currentExpression)));
             default:
                 if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
                     break;
