@@ -49,6 +49,9 @@ const CalcButton = (props)=> {
                 }
                 break;
             default:
+                if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
+                    break;
+                }
                 if(isDecimal && value === '.'){
                     console.log(isDecimal)
                     break;
