@@ -1,3 +1,5 @@
+let isDecimal = false;
+let isEvalSymbolLast = false;
 
 /**
  * 
@@ -12,12 +14,17 @@ const CalcButton = (props)=> {
         }
         switch(value){
             case 'C':
+                isDecimal = false;
                 setExpression('0');
                 break;
             case 'CE':
+                isDecimal = false;
                 console.log("unimplemented");
                 break;
             case '←':
+                if(currentExpression[currentExpression.length - 1] === '.'){
+                    isDecimal = false;
+                }
                 currentExpression = currentExpression.slice(0, currentExpression.length - 1)
                 if (currentExpression.length < 1){
                     currentExpression = '0';
@@ -25,12 +32,36 @@ const CalcButton = (props)=> {
                 setExpression(currentExpression);
                 break;
             case '=':
+                isDecimal = false;
                 setExpression(evaluate(currentExpression));
                 break;
             case 'x²':
+                isDecimal = false;
                 setExpression(Math.pow(+evaluate(currentExpression), 2));
                 break;
+            case '1/X':
+                isDecimal = false;
+                currentExpression = +evaluate(currentExpression);
+                if (currentExpression === 0){
+                    setExpression(0)
+                } else {
+                    setExpression(1 / currentExpression)
+                }
+                break;
             default:
+                if(isDecimal && value === '.'){
+                    console.log(isDecimal)
+                    break;
+                }
+                if(value === '.'){
+                    isDecimal = true;
+                }
+                if(value === '+' || value === '÷' || value === '−' || value === '⨯'){
+                    isEvalSymbolLast = true;
+                    isDecimal = false;
+                } else {
+                    isEvalSymbolLast = false;
+                }
                 setExpression(currentExpression + value);
                 break;
         }
