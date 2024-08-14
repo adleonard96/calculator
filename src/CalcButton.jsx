@@ -51,6 +51,7 @@ const CalcButton = (props)=> {
             case '√x':
                 isDecimal = false;
                 setExpression(Math.sqrt(+evaluate(currentExpression)));
+                break;
             default:
                 if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
                     break;
@@ -85,6 +86,11 @@ const CalcButton = (props)=> {
  * @returns 
  */
 function evaluate(expression){
+    if(isEvalSymbolLast){
+        expression = expression.slice(0, expression.length - 1);
+    }
+    isEvalSymbolLast = false;
+    console.log(expression)
     return eval(expression.replace('⨯', '*').replace('−', '-').replace('÷', '/'));
 }
 
