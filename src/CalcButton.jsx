@@ -22,6 +22,7 @@ const CalcButton = (props)=> {
                 console.log("unimplemented");
                 break;
             case '←':
+                currentExpression = `${currentExpression}`;
                 if(currentExpression[currentExpression.length - 1] === '.'){
                     isDecimal = false;
                 }
@@ -86,6 +87,7 @@ const CalcButton = (props)=> {
  * @returns 
  */
 function evaluate(expression){
+    expression = `${expression}`;
     if(isEvalSymbolLast){
         expression = expression.slice(0, expression.length - 1);
     }
