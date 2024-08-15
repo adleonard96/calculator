@@ -1,6 +1,6 @@
 let isDecimal = false;
 let isEvalSymbolLast = false;
-
+let isNegative = false;
 /**
  * 
  * @param {num} props 
@@ -9,69 +9,74 @@ let isEvalSymbolLast = false;
 const CalcButton = (props)=> {
     const updateExpression = (value, setExpression, currentExpression) => {
         if(currentExpression === '0'){
-            console.log("cat")
             currentExpression = '';
         }
-        switch(value){
-            case 'C':
-                isDecimal = false;
-                setExpression('0');
-                break;
-            case 'CE':
-                isDecimal = false;
-                console.log("unimplemented");
-                break;
-            case '←':
-                currentExpression = `${currentExpression}`;
-                if(currentExpression[currentExpression.length - 1] === '.'){
-                    isDecimal = false;
-                }
-                currentExpression = currentExpression.slice(0, currentExpression.length - 1)
-                if (currentExpression.length < 1){
-                    currentExpression = '0';
-                }
-                setExpression(currentExpression);
-                break;
-            case '=':
-                isDecimal = false;
-                setExpression(evaluate(currentExpression));
-                break;
-            case 'x²':
-                isDecimal = false;
-                setExpression(Math.pow(+evaluate(currentExpression), 2));
-                break;
-            case '1/X':
-                isDecimal = false;
-                currentExpression = +evaluate(currentExpression);
-                if (currentExpression === 0){
-                    setExpression(0)
-                } else {
-                    setExpression(1 / currentExpression)
-                }
-                break;
-            case '√x':
-                isDecimal = false;
-                setExpression(Math.sqrt(+evaluate(currentExpression)));
-                break;
-            default:
-                if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
+        try {
+
+            switch(value){
+                case 'C':
+                    resetNumberState();
+                    setExpression('0');
                     break;
-                }
-                if(isDecimal && value === '.'){
-                    console.log(isDecimal)
+                case 'CE':
+                    resetNumberState();
+                    console.log("unimplemented");
                     break;
-                }
-                if(value === '.'){
-                    isDecimal = true;
-                }
-                if(value === '+' || value === '÷' || value === '−' || value === '⨯'){
-                    isEvalSymbolLast = true;
-                    isDecimal = false;
-                } else {
-                    isEvalSymbolLast = false;
-                }
-                setExpression(currentExpression + value);
-                break;
+                case '←':
+                    currentExpression = `${currentExpression}`;
+                    if(currentExpression[currentExpression.length - 1] === '.'){
+                        isDecimal = false;
+                    }
+                    currentExpression = currentExpression.slice(0, currentExpression.length - 1)
+                    if (currentExpression.length < 1){
+                        currentExpression = '0';
+                    }
+                    setExpression(currentExpression);
+                    break;
+                case '=':
+                    resetNumberState();
+                    setExpression(evaluate(currentExpression));
+                    break;
+                case 'x²':
+                    resetNumberState();
+                    setExpression(Math.pow(+evaluate(currentExpression), 2));
+                    break;
+                case '1/X':
+                    resetNumberState();
+                    currentExpression = +evaluate(currentExpression);
+                    if (currentExpression === 0){
+                        setExpression(0)
+                    } else {
+                        setExpression(1 / currentExpression)
+                    }
+                    break;
+                case '√x':
+                    resetNumberState();
+                    setExpression(Math.sqrt(+evaluate(currentExpression)));
+                    break;
+                case '+/-':
+    
+                default:
+                    if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
+                        break;
+                    }
+                    if(isDecimal && value === '.'){
+                        break;
+                    }
+                    if(value === '.'){
+                        isDecimal = true;
+                    }
+                    if(value === '+' || value === '÷' || value === '−' || value === '⨯'){
+                        isEvalSymbolLast = true;
+                        isDecimal = false;
+                    } else {
+                        isEvalSymbolLast = false;
+                    }
+                    setExpression(currentExpression + value);
+                    break;
+            }
+        } catch (e) {
+            setExpression("ERR");
         }
     }
     return(
@@ -92,8 +97,16 @@ function evaluate(expression){
         expression = expression.slice(0, expression.length - 1);
     }
     isEvalSymbolLast = false;
-    console.log(expression)
     return eval(expression.replace('⨯', '*').replace('−', '-').replace('÷', '/'));
+}
+
+/**
+ * Updates the number state when needed.
+ * @returns { void }
+ */
+function resetNumberState(){
+    isDecimal = false;
+    isNegative = false;
 }
 
 export default CalcButton
