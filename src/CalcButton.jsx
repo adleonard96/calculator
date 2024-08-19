@@ -55,7 +55,8 @@ const CalcButton = (props)=> {
                     setExpression(Math.sqrt(+evaluate(currentExpression)));
                     break;
                 case '+/-':
-    
+                    setExpression(makeLastValueNegative(currentExpression));
+                    break;
                 default:
                     if(isEvalSymbolLast && (value === '+' || value === '÷' || value === '−' || value === '⨯')){
                         break;
@@ -107,6 +108,24 @@ function evaluate(expression){
 function resetNumberState(){
     isDecimal = false;
     isNegative = false;
+}
+
+/**
+ * 
+ * @param {string} expression 
+ */
+function makeLastValueNegative(expression){
+    let indexes = [0];    
+    indexes.push(expression.lastIndexOf('+'));
+    indexes.push(expression.lastIndexOf('⨯'));
+    indexes.push(expression.lastIndexOf('−'));
+    indexes.push(expression.lastIndexOf('÷'));
+    indexes.push(expression.lastIndexOf("%"));
+    indexes.sort((a, b) => a - b);
+    let newExpression = +expression.slice(indexes[0]) * -1;
+    console.log(newExpression); // Bug: if +/- hit multiple times it continues adding ------- to the value
+    let firstHalf = expression.slice(0, indexes[0]);
+    return `${firstHalf}${newExpression}`;
 }
 
 export default CalcButton
