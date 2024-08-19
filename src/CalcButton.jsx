@@ -8,7 +8,7 @@ let isNegative = false;
  */
 const CalcButton = (props)=> {
     const updateExpression = (value, setExpression, currentExpression) => {
-        if(currentExpression === '0'){
+        if(currentExpression === '0' || currentExpression ==='ERR' || currentExpression === Infinity){
             currentExpression = '';
         }
         try {
