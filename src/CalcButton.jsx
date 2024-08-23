@@ -115,16 +115,33 @@ function resetNumberState(){
  * @param {string} expression 
  */
 function makeLastValueNegative(expression){
+    expression = `${expression}`;
     let indexes = [0];    
+    let isNegativeInitial = isNegative;
     indexes.push(expression.lastIndexOf('+'));
     indexes.push(expression.lastIndexOf('⨯'));
     indexes.push(expression.lastIndexOf('−'));
     indexes.push(expression.lastIndexOf('÷'));
     indexes.push(expression.lastIndexOf("%"));
     indexes.sort((a, b) => a - b);
+    if (isNegativeInitial){
+        let negativeSignIndex = expression.lastIndexOf('-');
+        try {
+            let leftSide = expression.slice[0, negativeSignIndex];
+            let rightSide = expression.slice[negativeSignIndex];
+            console.log(leftSide);
+            console.log(rightSide);
+        } catch (e){ 
+            console.log(e);
+        }
+
+    }
+    
     let newExpression = +expression.slice(indexes[0]) * -1;
+
     console.log(newExpression); // Bug: if +/- hit multiple times it continues adding ------- to the value
     let firstHalf = expression.slice(0, indexes[0]);
+    isNegative = !isNegative;
     return `${firstHalf}${newExpression}`;
 }
 
