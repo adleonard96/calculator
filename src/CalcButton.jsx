@@ -70,6 +70,7 @@ const CalcButton = (props)=> {
                     if(value === '+' || value === '÷' || value === '−' || value === '⨯'){
                         isEvalSymbolLast = true;
                         isDecimal = false;
+                        isNegative = false;
                     } else {
                         isEvalSymbolLast = false;
                     }
@@ -116,33 +117,30 @@ function resetNumberState(){
  */
 function makeLastValueNegative(expression){
     expression = `${expression}`;
-    let indexes = [0];    
+    let indexes = [];    
     let isNegativeInitial = isNegative;
     indexes.push(expression.lastIndexOf('+'));
     indexes.push(expression.lastIndexOf('⨯'));
     indexes.push(expression.lastIndexOf('−'));
     indexes.push(expression.lastIndexOf('÷'));
     indexes.push(expression.lastIndexOf("%"));
-    indexes.sort((a, b) => a - b);
+    indexes.sort((a, b) => b - a);
+    isNegative = !isNegative;
     if (isNegativeInitial){
         let negativeSignIndex = expression.lastIndexOf('-');
-        try {
-            let leftSide = expression.slice[0, negativeSignIndex];
-            let rightSide = expression.slice[negativeSignIndex];
-            console.log(leftSide);
-            console.log(rightSide);
-        } catch (e){ 
-            console.log(e);
-        }
-
+        let leftSide = expression.slice(0, negativeSignIndex);
+        let rightSide = expression.slice(negativeSignIndex + 1);
+        expression = leftSide + rightSide
+        return expression;
+    } else {
+        if(indexes[0] !== -1){
+            let newExpression = +expression.slice(indexes[0] + 1) * -1;
+            let firstHalf = expression.slice(0, indexes[0] + 1);
+            return `${firstHalf}${newExpression}`;
+        } 
+        
+        return `${+expression * -1}`;
     }
-    
-    let newExpression = +expression.slice(indexes[0]) * -1;
-
-    console.log(newExpression); // Bug: if +/- hit multiple times it continues adding ------- to the value
-    let firstHalf = expression.slice(0, indexes[0]);
-    isNegative = !isNegative;
-    return `${firstHalf}${newExpression}`;
 }
 
 export default CalcButton
