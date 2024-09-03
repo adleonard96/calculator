@@ -117,7 +117,7 @@ function resetNumberState(){
  */
 function makeLastValueNegative(expression){
     expression = `${expression}`;
-    let indexes = [0];    
+    let indexes = [];    
     let isNegativeInitial = isNegative;
     indexes.push(expression.lastIndexOf('+'));
     indexes.push(expression.lastIndexOf('⨯'));
@@ -147,4 +147,4 @@ function makeLastValueNegative(expression){
     return `${firstHalf}${newExpression}`;
 }
 
-export default CalcButton
+export default CalcButton;
