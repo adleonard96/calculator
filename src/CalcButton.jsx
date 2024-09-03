@@ -70,6 +70,7 @@ const CalcButton = (props)=> {
                     if(value === '+' || value === '÷' || value === '−' || value === '⨯'){
                         isEvalSymbolLast = true;
                         isDecimal = false;
+                        isNegative = false;
                     } else {
                         isEvalSymbolLast = false;
                     }
@@ -124,13 +125,14 @@ function makeLastValueNegative(expression){
     indexes.push(expression.lastIndexOf('÷'));
     indexes.push(expression.lastIndexOf("%"));
     indexes.sort((a, b) => a - b);
+    // TODO: first 8+-95 is what it should look like, what is happening is 8+9-5
     if (isNegativeInitial){
         let negativeSignIndex = expression.lastIndexOf('-');
         try {
-            let leftSide = expression.slice[0, negativeSignIndex];
-            let rightSide = expression.slice[negativeSignIndex];
-            console.log(leftSide);
-            console.log(rightSide);
+            let leftSide = expression.slice(0, negativeSignIndex);
+            let rightSide = expression.slice(negativeSignIndex);
+            rightSide = +rightSide * -1;
+            return(`${leftSide}${rightSide}`);
         } catch (e){ 
             console.log(e);
         }
