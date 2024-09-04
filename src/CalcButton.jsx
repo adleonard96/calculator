@@ -140,9 +140,11 @@ function makeLastValueNegative(expression){
 
     }
     
+    if(indexes[0] == -1){
+        return +expression * -1;
+    }
     let newExpression = +expression.slice(indexes[0]) * -1;
 
-    console.log(newExpression); // Bug: if +/- hit multiple times it continues adding ------- to the value
     let firstHalf = expression.slice(0, indexes[0] + 1);
     isNegative = !isNegative;
     return `${firstHalf}${newExpression}`;
