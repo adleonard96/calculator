@@ -120,10 +120,10 @@ function makeLastValueNegative(expression){
     let indexes = [];    
     let isNegativeInitial = isNegative;
     indexes.push(expression.lastIndexOf('+'));
-    indexes.push(expression.lastIndexOf('⨯'));
-    indexes.push(expression.lastIndexOf('−'));
-    indexes.push(expression.lastIndexOf('÷'));
-    indexes.push(expression.lastIndexOf("%"));
+    indexes.push(expression.lastIndexOf('⨯'));  // Bugged NaN if negative
+    indexes.push(expression.lastIndexOf('−'));  // Bugged NaN if negative
+    indexes.push(expression.lastIndexOf('÷'));  // Bugged NaN if negative
+    indexes.push(expression.lastIndexOf("%"));  // Bugged NaN if negative
     indexes.sort((a, b) => b - a);
     // TODO: first 8+-95 is what it should look like, what is happening is 8+9-5
     if (isNegativeInitial){
