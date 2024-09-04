@@ -140,7 +140,7 @@ function makeLastValueNegative(expression){
 
     }
     
-    if(indexes[0] == -1){
+    if(indexes[0] === -1){
         return +expression * -1;
     }
     let newExpression = +expression.slice(indexes[0]) * -1;
