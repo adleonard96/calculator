@@ -78,6 +78,7 @@ const CalcButton = (props)=> {
                     break;
             }
         } catch (e) {
+            // errors are happening with large expressions
             setExpression("ERR");
         }
     }
@@ -120,12 +121,12 @@ function makeLastValueNegative(expression){
     let indexes = [];    
     let isNegativeInitial = isNegative;
     indexes.push(expression.lastIndexOf('+'));
-    indexes.push(expression.lastIndexOf('⨯'));  // Bugged NaN if negative
-    indexes.push(expression.lastIndexOf('−'));  // Bugged NaN if negative
-    indexes.push(expression.lastIndexOf('÷'));  // Bugged NaN if negative
-    indexes.push(expression.lastIndexOf("%"));  // Bugged NaN if negative
+    indexes.push(expression.lastIndexOf('⨯'));  
+    indexes.push(expression.lastIndexOf('−'));  
+    indexes.push(expression.lastIndexOf('÷'));  
+    indexes.push(expression.lastIndexOf("%"));  
     indexes.sort((a, b) => b - a);
-    // TODO: first 8+-95 is what it should look like, what is happening is 8+9-5
+
     if (isNegativeInitial){
         let negativeSignIndex = expression.lastIndexOf('-');
         try {
@@ -139,11 +140,14 @@ function makeLastValueNegative(expression){
         }
 
     }
-    
     if(indexes[0] === -1){
+        if(+expression === 0){
+            return '0';
+        }
+        isNegative = !isNegative;
         return +expression * -1;
     }
-    let newExpression = +expression.slice(indexes[0]) * -1;
+    let newExpression = +expression.slice(indexes[0] + 1, ) * -1;
 
     let firstHalf = expression.slice(0, indexes[0] + 1);
     isNegative = !isNegative;
